@@ -1,0 +1,264 @@
+{
+  "id": "9a6a6d59-1d76-4843-8d20-43a409fde618",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.message": {
+      "name": "message",
+      "schema": "",
+      "columns": {
+        "roomid": {
+          "name": "roomid",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "senderid": {
+          "name": "senderid",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "constext": {
+          "name": "constext",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "message_roomid_rooms_id_fk": {
+          "name": "message_roomid_rooms_id_fk",
+          "tableFrom": "message",
+          "tableTo": "rooms",
+          "columnsFrom": [
+            "roomid"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "message_senderid_users_id_fk": {
+          "name": "message_senderid_users_id_fk",
+          "tableFrom": "message",
+          "tableTo": "users",
+          "columnsFrom": [
+            "senderid"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.roomparticipants": {
+      "name": "roomparticipants",
+      "schema": "",
+      "columns": {
+        "roomid": {
+          "name": "roomid",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "userid": {
+          "name": "userid",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "roomparticipants_roomid_rooms_id_fk": {
+          "name": "roomparticipants_roomid_rooms_id_fk",
+          "tableFrom": "roomparticipants",
+          "tableTo": "rooms",
+          "columnsFrom": [
+            "roomid"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "roomparticipants_userid_users_id_fk": {
+          "name": "roomparticipants_userid_users_id_fk",
+          "tableFrom": "roomparticipants",
+          "tableTo": "users",
+          "columnsFrom": [
+            "userid"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "roomparticipants_roomid_userid_pk": {
+          "name": "roomparticipants_roomid_userid_pk",
+          "columns": [
+            "roomid",
+            "userid"
+          ]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.rooms": {
+      "name": "rooms",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "roomowner": {
+          "name": "roomowner",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "roomcode": {
+          "name": "roomcode",
+          "type": "varchar(4)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "roompassword": {
+          "name": "roompassword",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createAt": {
+          "name": "createAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "rooms_roomowner_users_id_fk": {
+          "name": "rooms_roomowner_users_id_fk",
+          "tableFrom": "rooms",
+          "tableTo": "users",
+          "columnsFrom": [
+            "roomowner"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "rooms_roomcode_unique": {
+          "name": "rooms_roomcode_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "roomcode"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.users": {
+      "name": "users",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password": {
+          "name": "password",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createAt": {
+          "name": "createAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "users_email_unique": {
+          "name": "users_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
